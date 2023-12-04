@@ -1,4 +1,4 @@
-export type User = {
+export type IUser = {
   username: string;
   userID: string;
   createdAt: Date;
@@ -11,27 +11,38 @@ interface Message {
 
 interface PrivateMessage {
   type: "private_message";
-  author: User;
+  author: IUser;
   targetID: string;
   message: Message;
 }
 
-// Typ für friend_request
-interface FriendRequest {
-  type: "friend_request";
-  // ... (fülle die Eigenschaften entsprechend aus)
+type MessageType = PrivateMessage;
+
+interface IToken {
+  type: "auth_token";
+  token: string;
 }
 
-// Typ für create_group
-interface CreateGroup {
-  type: "create_group";
-  // ... (fülle die Eigenschaften entsprechend aus)
+interface ILogin {
+  type: "auth_login";
+  password: string;
+  username: string;
 }
 
-type MessageType = PrivateMessage | FriendRequest | CreateGroup;
+interface IRegister {
+  type: "auth_register";
+  password: string;
+  username: string;
+  email: string;
+}
+
+type AuthenticationType = ILogin | IToken | IRegister;
 
 declare module "http" {
   interface IncomingMessage {
     user: User; // Replace 'any' with the actual type of your 'user' property
+  }
+  interface IncomingHttpHeaders {
+    authentication: AuthenticationType;
   }
 }

@@ -1,13 +1,13 @@
 import { sign } from "jsonwebtoken";
 import WebSocket from "ws";
-import { PrivateMessage, User } from "./types";
+import { PrivateMessage, IUser } from "./types";
 import { jwtKey } from "./config.json";
 import * as readline from "readline";
 
 const id = Math.floor(Math.random() * 2000);
-const user: User = { userID: String(id), username: `test-${id}`, createdAt: new Date() };
+const user: IUser = { userID: String(id), username: `test-${id}`, createdAt: new Date() };
 
-const socket = new WebSocket("ws://192.168.178.35:3000", {
+const socket = new WebSocket("ws://192.168.178.73:3000", {
   headers: {
     token: sign(user, jwtKey, { expiresIn: 1 * 24 * 60 * 60 * 1000 }),
   },
